@@ -1,26 +1,58 @@
-# Generación proactiva de PICs en Smalltalk
+# Compile-time PIC Generation using LiveTyping information
 
-Este repositorio reúne el trabajo realizado para mi tesis de Licenciatura en Ciencias de la Computación en la Universidad de Buenos Aires. Incluye la implementación, los experimentos y el informe sobre generación proactiva de **Polymorphic Inline Caches** (PICs) en Smalltalk utilizando información de tipos recolectada por LiveTyping.
+🌐 [English](README.md) | [Español](README.es.md)
 
-## Resumen
+---
 
-Los lenguajes orientados a objetos dinámicamente tipados, como Smalltalk, resuelven los envíos de mensajes en tiempo de ejecución a partir de la clase concreta del receptor. Este modelo favorece la flexibilidad y la evolución dinámica de los programas, pero introduce un costo de rendimiento asociado al despacho dinámico. Las máquinas virtuales modernas mitigan este costo mediante compilación Just-In-Time, Inline Caches (ICs) y Polymorphic Inline Caches (PICs). Sin embargo, estas cachés se construyen de forma reactiva en tiempo de ejecución lo cual también tiene un costo.
+This repository contains the work developed for my Master’s thesis in Computer
+Science at the University of Buenos Aires. It includes the implementation,
+experiments, and thesis report on the proactive generation of
+**Polymorphic Inline Caches** (PICs) in Smalltalk using type information
+collected by LiveTyping.
 
-Esta tesis explora un enfoque proactivo para la generación de ICs y PICs usando información de tipos recolectada por LiveTyping. En lugar de usar las PICs como fuente de información dinámica de tipos, se propone invertir el flujo: aprovechar los tipos previamente observados por LiveTyping para anticipar su generación en tiempo de compilación, en vez de depender únicamente de que la VM las construya durante la ejecución.
+## Abstract
 
-Para ello, se implementa soporte en la OpenSmalltalk VM mediante una primitiva que permite generar e instalar explícitamente ICs y PICs en sitios de envío seleccionados. A nivel de imagen, esta primitiva se integra con Cuis University y LiveTyping mediante un mecanismo que analiza métodos compilados y se concentra, en esta implementación, en envíos cuyo receptor proviene de una variable de instancia. A partir de la información de tipos recolectada, el mecanismo determina las clases receptoras y los métodos destino, y solicita a la VM la generación e instalación de la caché correspondiente.
+Dynamic object-oriented languages such as Smalltalk rely on run-time
+message dispatch, where the method to execute is determined from the
+concrete class of the receiver. Although this model provides
+flexibility and supports live program evolution, it also introduces
+a performance cost, especially at frequently executed send sites.
+Modern Smalltalk virtual machines mitigate this cost through
+Just-in-Time compilation, Inline Caches, and Polymorphic Inline
+Caches. However, these caches are traditionally constructed reactively
+at run time, introducing an additional execution cost before the optimized
+dispatch path becomes available.
 
-La evaluación experimental se realiza mediante microbenchmarks que varían la cantidad de sitios de envío, clases receptoras y el número de iteraciones ejecutadas. Los resultados muestran que la generación proactiva de PICs puede reducir el costo inicial del despacho dinámico, especialmente en ejecuciones cortas y en métodos con múltiples sitios de envío, introduciendo un trade-off en términos de código generado y uso de espacio en la zona de código de la VM.
+This paper explores a proactive approach to Polymorphic Inline Cache
+generation using type information collected by LiveTyping. Instead
+of using PICs as a source of run-time type feedback, we invert the
+direction of the information flow: previously collected LiveTyping
+information is used to guide the generation of ICs and PICs before
+the VM would normally construct them reactively. We implement this
+approach in the OpenSmalltalk VM by adding VM-level support for
+explicitly generating and installing dispatch caches, and by
+integrating it at the image level with Cuis University and
+LiveTyping.
 
-Palabras clave: PIC, IC, OpenSmalltalk VM, LiveTyping, Smalltalk, JIT.
+We evaluate the technique through controlled microbenchmarks that
+vary the number of send sites, receiver classes, and execution
+iterations. The results show that proactive PIC generation reduces
+the warm-up cost of dynamic dispatch, particularly during
+early execution and in methods with multiple dynamic send sites,
+while introducing a trade-off in generated code size and VM
+code-space usage.
 
-## Contenido del repositorio
+Keywords: Polymorphic Inline Caches (PIC), Inline Cache (IC), LiveTyping,
+Just-in-Time Compilation (JIT), Dynamic Dispatch, OpenSmalltalk VM,
+Virtual Machines (VM), Smalltalk
 
-- `stouts/cuis/`: implementación y benchmarks correspondientes a Cuis.
-- `stouts/osvm/`: cambios realizados sobre OpenSmalltalk VM.
-- `cuis/`: imagen, máquinas virtuales y scripts utilizados para ejecutar los experimentos.
-- `report/report.pdf`: informe completo de la tesis.
+## Repository contents
 
-## Informe
+* [`stouts/cuis/`](./stouts/cuis/): Cuis implementation and benchmarks.
+* [`stouts/osvm/`](./stouts/osvm/): changes made to the OpenSmalltalk VM.
+* [`cuis/`](./cuis/): Cuis image, virtual machines, and scripts used to run the experiments.
+* [`report/report.pdf`](./report/report.pdf): complete Master’s thesis report.
 
-El informe completo, **"Compilación de PICs en Smalltalk a partir de LiveTyping"**, está disponible en [`report/report.pdf`](report/report.pdf).
+## Thesis report
+
+The complete thesis report, **“Compilación de PICs en Smalltalk a partir de LiveTyping,”** is available at [`report/report.pdf`](report/report.pdf). The report is currently available only in Spanish.
