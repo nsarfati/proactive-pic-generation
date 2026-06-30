@@ -53,6 +53,10 @@ Virtual Machines (VM), Smalltalk
 * [`cuis/`](./cuis/): Cuis image, virtual machines, and scripts used to run the experiments.
 * [`report/report.pdf`](./report/report.pdf): complete Master’s thesis report.
 
+## Microbenchmark results
+
+* [`results/results.pdf`](./results/results.pdf)
+
 ## Thesis report
 
 The complete thesis report, **“Compilación de PICs en Smalltalk a partir de LiveTyping,”** is available at [`report/report.pdf`](report/report.pdf). The report is currently available only in Spanish.
